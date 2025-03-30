@@ -11,6 +11,6 @@ public class ReportResponse {
     private LocalDate date;
     private Integer totalCalories;
     private Integer dailyNorm;
-    private Boolean isGoalAchieved;
+    private Boolean isTargetAchieved;
     private List<MealResponse> meals;
 }
