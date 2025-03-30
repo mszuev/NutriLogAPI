@@ -1,18 +1,16 @@
 package ru.mzuev.nutrilogapi.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "meals")
 public class Meal {
 
@@ -32,4 +30,26 @@ public class Meal {
 
     @Column(name = "total_calories")
     private Integer totalCalories;
+
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+        calculateTotalCalories();
+    }
+
+    public void calculateTotalCalories() {
+        this.totalCalories = dishes.stream()
+                .mapToInt(dish -> dish.getPortions() * dish.getDish().getCaloriesPerServing())
+                .sum();
+    }
+
+    public static Meal create(User user, LocalDate date) {
+        Meal meal = new Meal();
+        meal.setUser(user);
+        meal.setDate(date);
+        return meal;
+    }
 }

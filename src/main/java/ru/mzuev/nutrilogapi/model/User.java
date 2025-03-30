@@ -1,17 +1,14 @@
 package ru.mzuev.nutrilogapi.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ru.mzuev.nutrilogapi.model.enums.TargetType;
-import java.time.LocalDateTime;
+import java.time.Instant;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "users")
 public class User {
 
@@ -26,27 +23,38 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private int age;
+    private Integer age;
 
-    @Column(name = "weight_kg")
-    private double weight;
+    @Column(name = "weight_kg", nullable = false)
+    private Double weight;
 
-    @Column(name = "height_cm")
-    private double height;
+    @Column(name = "height_cm", nullable = false)
+    private Double height;
 
     @Enumerated(EnumType.STRING)
-    private TargetType goal;
+    @Column(nullable = false)
+    private TargetType targetType;
 
-    @Column(name = "daily_calorie_norm")
-    private double dailyCalorieNorm;
+    @Column(name = "daily_calorie_norm", nullable = false)
+    private Double dailyCalorieNorm;
 
     @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @PrePersist
-    public void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDateTime.now();
-        }
+    protected void onCreate() {
+        createdAt = Instant.now();
+    }
+
+    public static User create(String name, String email, int age, double weight,
+                              double height, TargetType targetType) {
+        User user = new User();
+        user.setName(name);
+        user.setEmail(email);
+        user.setAge(age);
+        user.setWeight(weight);
+        user.setHeight(height);
+        user.setTargetType(targetType);
+        return user;
     }
 }

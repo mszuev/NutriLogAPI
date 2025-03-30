@@ -1,15 +1,13 @@
 package ru.mzuev.nutrilogapi.model;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import java.time.Instant;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Entity
 @Table(name = "meal_dishes")
 public class MealDish {
 
@@ -27,4 +25,20 @@ public class MealDish {
 
     @Column(nullable = false)
     private Integer portions;
+
+    @Column(name = "created_at", updatable = false)
+    private Instant createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = Instant.now();
+    }
+
+    public static MealDish create(Meal meal, Dish dish, int portions) {
+        MealDish mealDish = new MealDish();
+        mealDish.setMeal(meal);
+        mealDish.setDish(dish);
+        mealDish.setPortions(portions);
+        return mealDish;
+    }
 }
