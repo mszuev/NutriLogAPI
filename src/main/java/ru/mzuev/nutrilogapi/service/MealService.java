@@ -2,6 +2,7 @@ package ru.mzuev.nutrilogapi.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.mzuev.nutrilogapi.dto.MealRequest;
 import ru.mzuev.nutrilogapi.dto.MealResponse;
 import ru.mzuev.nutrilogapi.exception.ResourceNotFoundException;
@@ -22,6 +23,7 @@ public class MealService {
     private final UserRepository userRepository;
     private final MealMapper mealMapper;
 
+    @Transactional
     public MealResponse createMeal(MealRequest request) {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(() -> new ResourceNotFoundException("Пользователь не найден"));
@@ -30,6 +32,7 @@ public class MealService {
         return mealMapper.toResponse(mealRepository.save(meal));
     }
 
+    @Transactional(readOnly = true)
     public List<MealResponse> getMealsByUserAndDate(Long userId, LocalDate date) {
         return mealRepository.findByUserIdAndDate(userId, date).stream()
                 .map(mealMapper::toResponse)
