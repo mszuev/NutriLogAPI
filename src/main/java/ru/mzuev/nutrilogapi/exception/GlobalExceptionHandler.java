@@ -1,18 +1,19 @@
 package ru.mzuev.nutrilogapi.exception;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.*;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.springframework.validation.FieldError;
 import java.net.URI;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@Slf4j
 @RestControllerAdvice
-public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler{
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex) {
@@ -50,5 +51,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
         problemDetail.setProperty("errors", errors);
         return problemDetail;
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ProblemDetail handleGeneralException(Exception ex) {
+        log.error("Непредвиденная ошибка: ", ex);
+
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.INTERNAL_SERVER_ERROR,
+                "Произошла внутренняя ошибка сервера"
+        );
+        problem.setType(URI.create("/errors/internal-error"));
+        problem.setTitle("Внутренняя ошибка");
+        return problem;
     }
 }
