@@ -28,7 +28,7 @@ public class MealMapper {
 
     private MealDish toMealDish(MealRequest.MealDishRequest request, Meal meal) {
         Dish dish = dishRepository.findById(request.getDishId())
-                .orElseThrow(() -> new ResourceNotFoundException("Dish not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Блюдо не найдено"));
 
         return MealDish.create(meal, dish, request.getPortions());
     }
