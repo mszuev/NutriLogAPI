@@ -2,8 +2,10 @@ package ru.mzuev.nutrilogapi.dto;
 
 import lombok.Data;
 import ru.mzuev.nutrilogapi.model.enums.TargetType;
-import java.time.Instant;
 
+/**
+ * DTO для ответа с данными пользователя.
+ */
 @Data
 public class UserResponse {
     private Long id;

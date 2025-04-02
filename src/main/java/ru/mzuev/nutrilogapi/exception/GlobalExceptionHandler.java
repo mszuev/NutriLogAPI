@@ -11,10 +11,21 @@ import java.net.URI;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Глобальный обработчик исключений.
+ * Преобразует исключения в стандартизированные ответы ProblemDetail.
+ */
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler{
 
+    /**
+     * Обрабатывает исключение {@link ResourceNotFoundException}.
+     * Возвращает ответ с HTTP-статусом 404 (Not Found) и деталями ошибки.
+     *
+     * @param ex перехваченное исключение
+     * @return объект {@link ProblemDetail} с кодом 404, типом ошибки и сообщением
+     */
     @ExceptionHandler(ResourceNotFoundException.class)
     public ProblemDetail handleResourceNotFound(ResourceNotFoundException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
@@ -23,6 +34,13 @@ public class GlobalExceptionHandler{
         return problem;
     }
 
+    /**
+     * Обрабатывает исключение {@link ConflictException}.
+     * Возвращает ответ с HTTP-статусом 409 (Conflict) и деталями конфликта.
+     *
+     * @param ex перехваченное исключение
+     * @return объект {@link ProblemDetail} с кодом 409, типом ошибки и сообщением
+     */
     @ExceptionHandler(ConflictException.class)
     public ProblemDetail handleConflict(ConflictException ex) {
         ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
@@ -31,6 +49,13 @@ public class GlobalExceptionHandler{
         return problem;
     }
 
+    /**
+     * Обрабатывает ошибки валидации {@link MethodArgumentNotValidException}.
+     * Возвращает ответ с HTTP-статусом 400 (Bad Request), списком ошибок и их описанием.
+     *
+     * @param ex перехваченное исключение
+     * @return объект {@link ProblemDetail} с кодом 400, типом ошибки и списком полей с ошибками
+     */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ProblemDetail handleValidationExceptions(MethodArgumentNotValidException ex) {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
@@ -53,6 +78,14 @@ public class GlobalExceptionHandler{
         return problemDetail;
     }
 
+    /**
+     * Обрабатывает все непредвиденные исключения.
+     * Возвращает ответ с HTTP-статусом 500 (Internal Server Error) и общим сообщением об ошибке.
+     * Детали ошибки логируются в консоль.
+     *
+     * @param ex перехваченное исключение
+     * @return объект {@link ProblemDetail} с кодом 500 и общим описанием ошибки
+     */
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGeneralException(Exception ex) {
         log.error("Непредвиденная ошибка: ", ex);

@@ -3,6 +3,9 @@ package ru.mzuev.nutrilogapi.dto;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 
+/**
+ * DTO для запроса на создание блюда.
+ */
 @Data
 public class DishRequest {
 

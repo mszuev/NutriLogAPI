@@ -12,6 +12,9 @@ import ru.mzuev.nutrilogapi.repository.DishRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для операций с блюдами.
+ */
 @Service
 @RequiredArgsConstructor
 public class DishService {
@@ -19,6 +22,13 @@ public class DishService {
     private final DishRepository dishRepository;
     private final DishMapper dishMapper;
 
+    /**
+     * Создает новое блюдо.
+     *
+     * @param request DTO с данными для создания
+     * @return DTO созданного блюда
+     * @throws ConflictException если блюдо с таким названием уже существует
+     */
     @Transactional
     public DishResponse createDish(DishRequest request) {
         if (dishRepository.existsByName(request.getName())) {
@@ -28,6 +38,11 @@ public class DishService {
         return dishMapper.toResponse(dishRepository.save(dish));
     }
 
+    /**
+     * Получает список всех блюд.
+     *
+     * @return список DTO блюд
+     */
     @Transactional(readOnly = true)
     public List<DishResponse> getAllDishes() {
         return dishRepository.findAll().stream()

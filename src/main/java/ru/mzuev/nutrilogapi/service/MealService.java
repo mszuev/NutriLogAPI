@@ -15,6 +15,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для операций с приемами пищи.
+ */
 @Service
 @RequiredArgsConstructor
 public class MealService {
@@ -23,6 +26,13 @@ public class MealService {
     private final UserRepository userRepository;
     private final MealMapper mealMapper;
 
+    /**
+     * Создает прием пищи.
+     *
+     * @param request DTO с данными для создания
+     * @return DTO созданного приема пищи
+     * @throws ResourceNotFoundException если пользователь не найден
+     */
     @Transactional
     public MealResponse createMeal(MealRequest request) {
         User user = userRepository.findById(request.getUserId())
@@ -32,6 +42,13 @@ public class MealService {
         return mealMapper.toResponse(mealRepository.save(meal));
     }
 
+    /**
+     * Получает приемы пищи пользователя за конкретную дату.
+     *
+     * @param userId ID пользователя
+     * @param date Дата приема пищи
+     * @return список DTO приемов пищи
+     */
     @Transactional(readOnly = true)
     public List<MealResponse> getMealsByUserAndDate(Long userId, LocalDate date) {
         return mealRepository.findByUserIdAndDate(userId, date).stream()

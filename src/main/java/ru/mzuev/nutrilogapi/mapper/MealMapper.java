@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.mzuev.nutrilogapi.repository.DishRepository;
 
+/**
+ * Маппер для преобразования между сущностью Meal и DTO
+ */
 @Component
 public class MealMapper {
 
@@ -18,6 +21,13 @@ public class MealMapper {
         this.dishRepository = dishRepository;
     }
 
+    /**
+     * Конвертирует MealRequest в сущность Meal
+     * @param request DTO запроса
+     * @param user связанный пользователь
+     * @return сущность Meal
+     * @throws ResourceNotFoundException если блюдо не найдено
+     */
     public Meal toEntity(MealRequest request, User user) {
         Meal meal = Meal.create(user, request.getDate());
         request.getDishes().forEach(dishRequest ->
@@ -26,6 +36,7 @@ public class MealMapper {
         return meal;
     }
 
+
     private MealDish toMealDish(MealRequest.MealDishRequest request, Meal meal) {
         Dish dish = dishRepository.findById(request.getDishId())
                 .orElseThrow(() -> new ResourceNotFoundException("Блюдо не найдено"));
@@ -33,6 +44,11 @@ public class MealMapper {
         return MealDish.create(meal, dish, request.getPortions());
     }
 
+    /**
+     * Конвертирует сущность Meal в MealResponse
+     * @param meal сущность Meal
+     * @return DTO ответа
+     */
     public MealResponse toResponse(Meal meal) {
         MealResponse response = new MealResponse();
         response.setId(meal.getId());

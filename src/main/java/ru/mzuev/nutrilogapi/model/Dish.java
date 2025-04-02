@@ -2,8 +2,10 @@ package ru.mzuev.nutrilogapi.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.Instant;
 
+/**
+ * Сущность блюда
+ */
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,6 +32,16 @@ public class Dish {
     @Column(nullable = false)
     private Double carbohydrates;
 
+    /**
+     * Создает новое блюдо с указанными параметрами.
+     *
+     * @param name название блюда
+     * @param calories калории на порцию
+     * @param proteins количество белков (в граммах)
+     * @param fats количество жиров (в граммах)
+     * @param carbs количество углеводов (в граммах)
+     * @return новый объект Dish
+     */
     public static Dish create(String name, int calories, double proteins, double fats, double carbs) {
         Dish dish = new Dish();
         dish.setName(name);

@@ -1,8 +1,10 @@
 package ru.mzuev.nutrilogapi.dto;
 
 import lombok.Data;
-import java.time.Instant;
 
+/**
+ * DTO для ответа с информацией о блюде.
+ */
 @Data
 public class DishResponse {
     private Long id;

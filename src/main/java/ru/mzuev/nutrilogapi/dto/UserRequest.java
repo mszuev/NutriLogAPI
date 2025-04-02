@@ -4,6 +4,9 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 import ru.mzuev.nutrilogapi.model.enums.TargetType;
 
+/**
+ * DTO для запроса на создание пользователя.
+ */
 @Data
 public class UserRequest {
 

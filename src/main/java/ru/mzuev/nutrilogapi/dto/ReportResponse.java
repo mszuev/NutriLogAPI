@@ -5,6 +5,9 @@ import lombok.Builder;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * DTO для ответа с ежедневным отчетом.
+ */
 @Data
 @Builder
 public class ReportResponse {

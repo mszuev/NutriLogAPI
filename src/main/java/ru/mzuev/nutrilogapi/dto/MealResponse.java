@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO для ответа с информацией о приеме пищи.
+ */
 @Data
 public class MealResponse {
     private Long id;
@@ -12,6 +15,9 @@ public class MealResponse {
     private Integer totalCalories;
     private List<MealDishResponse> dishes = new ArrayList<>();
 
+    /**
+     * DTO для блюда в составе приема пищи.
+     */
     @Data
     public static class MealDishResponse {
         private String dishName;

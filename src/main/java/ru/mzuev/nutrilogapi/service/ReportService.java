@@ -14,6 +14,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Сервис для генерации отчетов.
+ */
 @Service
 @RequiredArgsConstructor
 public class ReportService {
@@ -21,6 +24,14 @@ public class ReportService {
     private final MealRepository mealRepository;
     private final MealMapper mealMapper;
 
+    /**
+     * Генерирует ежедневный отчет по питанию.
+     *
+     * @param userId ID пользователя
+     * @param date Дата отчета
+     * @return DTO с отчетом
+     * @throws ResourceNotFoundException если пользователь не найден
+     */
     @Transactional(readOnly = true)
     public ReportResponse generateDailyReport(Long userId, LocalDate date) {
         User user = userRepository.findById(userId)
@@ -46,6 +57,14 @@ public class ReportService {
                 .build();
     }
 
+    /**
+     * Проверяет, достигнута ли дневная цель по калориям в зависимости от типа цели.
+     *
+     * @param user Пользователь
+     * @param totalCalories Суммарное потребление калорий
+     * @param dailyNorm Дневная норма
+     * @return true если цель достигнута
+     */
     // MAINTENANCE true, если отклонение от дневной нормы не более 10%
     private static boolean isTargetAchieved(User user, int totalCalories, double dailyNorm) {
         boolean isTargetAchieved;

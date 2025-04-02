@@ -6,9 +6,17 @@ import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+/**
+ * Конфигурационный класс для настройки документации Swagger.
+ */
 @Configuration
 public class SwaggerConfig {
 
+    /**
+     * Создает кастомную конфигурацию OpenAPI.
+     *
+     * @return объект OpenAPI с базовыми настройками
+     */
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
