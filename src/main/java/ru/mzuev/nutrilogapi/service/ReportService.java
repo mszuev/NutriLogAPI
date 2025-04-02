@@ -34,12 +34,32 @@ public class ReportService {
                 .mapToInt(MealResponse::getTotalCalories)
                 .sum();
 
+        double dailyNorm = user.getDailyCalorieNorm();
+        boolean isTargetAchieved = isTargetAchieved(user, totalCalories, dailyNorm);
+
         return ReportResponse.builder()
                 .date(date)
                 .totalCalories(totalCalories)
-                .dailyNorm(user.getDailyCalorieNorm().intValue())
-                .isTargetAchieved(totalCalories <= user.getDailyCalorieNorm())
+                .dailyNorm((int) dailyNorm)
+                .isTargetAchieved(isTargetAchieved)
                 .meals(meals)
                 .build();
+    }
+
+    // MAINTENANCE true, если отклонение от дневной нормы не более 10%
+    private static boolean isTargetAchieved(User user, int totalCalories, double dailyNorm) {
+        boolean isTargetAchieved;
+
+        switch (user.getTargetType()) {
+            case WEIGHT_LOSS -> isTargetAchieved = (totalCalories < dailyNorm);
+            case MAINTENANCE -> {
+                double lowerBound = dailyNorm * 0.9;
+                double upperBound = dailyNorm * 1.1;
+                isTargetAchieved = (totalCalories >= lowerBound && totalCalories <= upperBound);
+            }
+            case WEIGHT_GAIN -> isTargetAchieved = (totalCalories > dailyNorm);
+            default -> isTargetAchieved = false;
+        }
+        return isTargetAchieved;
     }
 }
