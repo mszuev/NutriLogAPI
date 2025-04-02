@@ -14,5 +14,4 @@ public class UserResponse {
     private Double height;
     private TargetType targetType;
     private Double dailyCalorieNorm;
-    private Instant createdAt;
 }

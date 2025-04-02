@@ -26,14 +26,6 @@ public class MealDish {
     @Column(nullable = false)
     private Integer portions;
 
-    @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-    }
-
     public static MealDish create(Meal meal, Dish dish, int portions) {
         MealDish mealDish = new MealDish();
         mealDish.setMeal(meal);

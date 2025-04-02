@@ -38,14 +38,6 @@ public class User {
     @Column(name = "daily_calorie_norm", nullable = false)
     private Double dailyCalorieNorm;
 
-    @Column(name = "created_at", updatable = false)
-    private Instant createdAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = Instant.now();
-    }
-
     public static User create(String name, String email, int age, double weight,
                               double height, TargetType targetType) {
         User user = new User();

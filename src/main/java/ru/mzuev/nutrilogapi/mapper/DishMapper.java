@@ -26,7 +26,6 @@ public class DishMapper {
         response.setProteins(dish.getProteins());
         response.setFats(dish.getFats());
         response.setCarbohydrates(dish.getCarbohydrates());
-        response.setCreatedAt(dish.getCreatedAt());
         return response;
     }
 }

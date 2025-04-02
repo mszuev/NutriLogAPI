@@ -32,7 +32,6 @@ public class UserMapper {
         response.setHeight(user.getHeight());
         response.setTargetType(user.getTargetType());
         response.setDailyCalorieNorm(user.getDailyCalorieNorm());
-        response.setCreatedAt(user.getCreatedAt());
         return response;
     }
 }
